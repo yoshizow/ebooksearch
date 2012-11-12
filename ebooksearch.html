@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+<head>
+<title>EBookSearch</title>
+<script type="text/javascript">
+var SITES = [
+    { title: "Rakuten Kobo",
+      queryUrl: "http://rakuten.kobobooks.com/search/search.html?q=%s" },
+    { title: "Amazon Kindle",
+      queryUrl: "http://www.amazon.co.jp/s/ref=nb_sb_noss?url=search-alias%3Ddigital-text&field-keywords=%s" },
+    { title: "Google Play Books",
+      queryUrl: "https://play.google.com/store/search?c=books&q=%s" },
+    { title: "BookLive!",
+      queryUrl: "http://booklive.jp/search/keyword?keyword=%s" }
+];
+
+function search(str) {
+    var queryStr = encodeURI(str);
+    SITES.forEach(function(e) {
+        var queryUrl = e.queryUrl.replace(/%s/, queryStr);
+        window.open(queryUrl, "_blank");
+    });
+}
+
+window.onload = function() {
+    var tf_query = document.getElementById("tf_query");
+    tf_query.addEventListener("change", function(ev) {
+        search(tf_query.value);
+    });
+    tf_query.focus();
+};
+</script>
+</head>
+
+<body>
+<h1>EBookSearch</h1>
+
+<input type="text" id="tf_query" size=30>
+
+<p style="margin-top: 2em;">Copyright(c) 2012 yoshizow</p>
+
+</body>
+</html>
