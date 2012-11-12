@@ -9,23 +9,54 @@
     <link rel="stylesheet" href="gh-fork-ribbon.ie.css" />
 <![endif]-->
 <!-- END COPYING HERE -->
+<style type="text/css">
+p.footer { margin-top: 2em; }
+ul#site_list {
+    list-style-type: none;
+    padding: 0;
+}
+</style>
 <script type="text/javascript">
 var SITES = [
     { title: "Rakuten Kobo",
+      siteUrl: "http://kobo.rakuten.co.jp/",
       queryUrl: "http://rakuten.kobobooks.com/search/search.html?q=%s" },
     { title: "Amazon Kindle",
+      siteUrl: "http://www.amazon.co.jp/Kindle-%E3%82%AD%E3%83%B3%E3%83%89%E3%83%AB-%E9%9B%BB%E5%AD%90%E6%9B%B8%E7%B1%8D/b/ref=topnav_storetab_kinc?ie=UTF8&node=2250738051",
       queryUrl: "http://www.amazon.co.jp/s/ref=nb_sb_noss?url=search-alias%3Ddigital-text&field-keywords=%s" },
     { title: "Google Play Books",
+      siteUrl: "https://play.google.com/store/books",
       queryUrl: "https://play.google.com/store/search?c=books&q=%s" },
     { title: "BookLive!",
+      siteUrl: "http://booklive.jp/",
       queryUrl: "http://booklive.jp/search/keyword?keyword=%s" }
 ];
 
 function search(str) {
     var queryStr = encodeURI(str);
+    var ul = document.getElementById("site_list");
+    var list = ul.getElementsByTagName("li");
+    for (var i = 0; i < SITES.length; i++) {
+        if (list[i].getElementsByTagName("input")[0].checked) {
+            var queryUrl = SITES[i].queryUrl.replace(/%s/, queryStr);
+            window.open(queryUrl, "_blank");
+        }
+    }
+}
+
+function setupList() {
+    var ul = document.getElementById("site_list");
     SITES.forEach(function(e) {
-        var queryUrl = e.queryUrl.replace(/%s/, queryStr);
-        window.open(queryUrl, "_blank");
+        var li = document.createElement("li");
+        var input = document.createElement("input");
+        input.setAttribute("type", "checkbox");
+        input.setAttribute("checked", "checked");
+        li.appendChild(input);
+        var a = document.createElement("a");
+        a.setAttribute("href", e.siteUrl);
+        a.textContent = e.title;
+        li.appendChild(a);
+        ul.appendChild(li);
     });
 }
 
@@ -35,6 +66,7 @@ window.onload = function() {
         search(tf_query.value);
     });
     tf_query.focus();
+    setupList();
 };
 </script>
 </head>
@@ -51,8 +83,10 @@ window.onload = function() {
 <h1>EBookSearch</h1>
 
 <input type="text" id="tf_query" size=30>
+<ul id="site_list">
+</ul>
 
-<p style="margin-top: 2em;">Copyright(c) 2012 yoshizow</p>
+<p class="footer">Copyright(c) 2012 yoshizow</p>
 
 </body>
 </html>
