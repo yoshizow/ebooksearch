@@ -64,10 +64,12 @@ function setupList() {
 }
 
 window.onload = function() {
+    var form = document.getElementById("form");
     var tf_query = document.getElementById("tf_query");
-    tf_query.addEventListener("change", function(ev) {
+    form.addEventListener("submit", function(ev) {
         search(tf_query.value);
-    });
+        ev.preventDefault();
+    }, false);
     tf_query.focus();
     setupList();
 };
@@ -85,7 +87,9 @@ window.onload = function() {
 
 <h1>EBookSearch</h1>
 
+<form id="form">
 <input type="text" id="tf_query" size=30>
+</form>
 <ul id="site_list">
 </ul>
 
