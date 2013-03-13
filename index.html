@@ -16,6 +16,7 @@ ul#site_list {
     padding: 0;
 }
 </style>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 <script type="text/javascript">
 var SITES = [
     { title: "Rakuten Kobo",
@@ -37,10 +38,9 @@ var SITES = [
 
 function search(str) {
     var queryStr = encodeURI(str);
-    var ul = document.getElementById("site_list");
-    var list = ul.getElementsByTagName("li");
+    var list = $("#site_list li");
     for (var i = 0; i < SITES.length; i++) {
-        if (list[i].getElementsByTagName("input")[0].checked) {
+        if ($(list[i]).find("input").prop("checked")) {
             var queryUrl = SITES[i].queryUrl.replace(/%s/, queryStr);
             window.open(queryUrl, "_blank");
         }
@@ -48,31 +48,25 @@ function search(str) {
 }
 
 function setupList() {
-    var ul = document.getElementById("site_list");
+    var ul = $("#site_list");
     SITES.forEach(function(e) {
-        var li = document.createElement("li");
-        var input = document.createElement("input");
-        input.setAttribute("type", "checkbox");
-        input.setAttribute("checked", "checked");
-        li.appendChild(input);
-        var a = document.createElement("a");
-        a.setAttribute("href", e.siteUrl);
-        a.textContent = e.title;
-        li.appendChild(a);
-        ul.appendChild(li);
+        var li = $("<li>");
+        $('<input type="checkbox" checked="checked">').appendTo(li);
+        $("<a>", { href: e.siteUrl }).text(e.title).appendTo(li);
+        ul.append(li);
     });
 }
 
-window.onload = function() {
-    var form = document.getElementById("form");
-    var tf_query = document.getElementById("tf_query");
-    form.addEventListener("submit", function(ev) {
-        search(tf_query.value);
+$(document).ready(function() {
+    var form = $("#form");
+    var tf_query = $("#tf_query");
+    form.on("submit", function(ev) {
+        search(tf_query.val());
         ev.preventDefault();
-    }, false);
+    });
     tf_query.focus();
     setupList();
-};
+});
 </script>
 </head>
 
